@@ -1,0 +1,27 @@
+{
+  "name": "gitroast",
+  "version": "1.0.0",
+  "description": "GitHub Roast and Rescue: Give a messy GitHub profile the honest feedback it deserves.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/"
+  },
+  "keywords": [
+    "github",
+    "roast",
+    "rescue",
+    "developer-portfolio",
+    "code-health",
+    "cloud-run"
+  ],
+  "author": "GitRoast Hackathon Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 GitRoast & Rescue — Give your GitHub the honest truth</title>
+  <meta name="description" content="GitHub Roast and Rescue: Give a messy GitHub profile the honest feedback it deserves. Deterministic Health Score, personalized roasts, and actionable rescue plans.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Skip link for keyboard accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- App Header -->
+  <header class="app-header" role="banner">
+    <div class="header-container">
+      <div class="brand">
+        <a href="/" class="brand-link" aria-label="GitRoast home">
+          <span class="flame-icon" aria-hidden="true">🔥</span>
+          <span class="brand-name">GitRoast</span>
+          <span class="brand-tag">Rescue</span>
+        </a>
+      </div>
+      <div class="header-actions">
+        <div class="mode-switch-wrapper" role="group" aria-label="Analysis presentation mode">
+          <button type="button" id="roastModeBtn" class="mode-btn active" aria-pressed="true" aria-controls="results-view">
+            <span aria-hidden="true">🔥</span> Roast Mode
+          </button>
+          <button type="button" id="recruiterModeBtn" class="mode-btn" aria-pressed="false" aria-controls="results-view">
+            <span aria-hidden="true">💼</span> Recruiter Mode
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-container">
+    <!-- Hero & Search Section -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        <span>Honest GitHub Portfolio Audits</span>
+      </div>
+      <h1 id="hero-title" class="hero-title">
+        Your GitHub deserves <span class="highlight-fire">the truth.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Analyze real public repositories, calculate your transparent 100-point Health Score, get a brutally witty personalized roast, and walk away with a step-by-step rescue plan.
+      </p>
+
+      <!-- Input Form -->
+      <form id="roastForm" class="roast-form" role="search" novalidate>
+        <div class="input-wrapper">
+          <span class="input-prefix" aria-hidden="true">github.com/</span>
+          <label for="usernameInput" class="sr-only">Enter GitHub username</label>
+          <input
+            type="text"
+            id="usernameInput"
+            name="username"
+            class="username-input"
+            placeholder="Enter GitHub username (e.g. torvalds)"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            required
+            aria-describedby="inputError"
+          />
+          <button type="submit" id="submitBtn" class="submit-btn" aria-label="Roast my GitHub profile">
+            <span class="btn-text">🔥 ROAST MY GITHUB</span>
+            <span class="btn-loader" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div id="inputError" class="input-error" role="alert" aria-live="polite"></div>
+
+        <!-- Quick Pick Suggestions -->
+        <div class="quick-picks" aria-label="Sample Profiles to Try">
+          <span class="quick-pick-label">Try famous accounts:</span>
+          <button type="button" class="quick-btn" data-user="gaearon">@gaearon</button>
+          <button type="button" class="quick-btn" data-user="torvalds">@torvalds</button>
+          <button type="button" class="quick-btn" data-user="sindresorhus">@sindresorhus</button>
+          <button type="button" class="quick-btn" data-user="addyosmani">@addyosmani</button>
+        </div>
+      </form>
+
+      <!-- Value Props Ticker -->
+      <div class="philosophy-strip" role="note">
+        <span class="strip-icon" aria-hidden="true">⚖️</span>
+        <span>Product Philosophy: <strong>"Roast the profile, not the person."</strong> Every criticism comes with a concrete rescue solution.</span>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <section id="loadingSection" class="loading-section" aria-live="polite" aria-busy="false" hidden>
+      <div class="loading-card">
+        <div class="flame-spinner" aria-hidden="true">
+          <span class="spinner-particle p1"></span>
+          <span class="spinner-particle p2"></span>
+          <span class="spinner-particle p3"></span>
+        </div>
+        <h2 id="loadingText" class="loading-title">Inspecting GitHub Profile...</h2>
+        <p id="loadingSubtext" class="loading-desc">Fetching repositories, evaluating README hygiene, and heating the grill...</p>
+        <div class="loading-progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error Banner -->
+    <section id="errorSection" class="error-section" role="alert" aria-live="assertive" hidden>
+      <div class="error-card">
+        <div class="error-icon" aria-hidden="true">⚠️</div>
+        <div class="error-content">
+          <h2 id="errorTitle" class="error-heading">Analysis Error</h2>
+          <p id="errorMessage" class="error-body">Could not inspect profile.</p>
+          <div id="errorDetails" class="error-details"></div>
+          <button type="button" id="errorRetryBtn" class="retry-btn">Try Another Profile</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <div id="resultsView" class="results-container" hidden>
+      <!-- Profile Header Summary Banner -->
+      <section class="profile-banner-card" aria-label="Profile Overview">
+        <div class="profile-identity">
+          <img id="userAvatar" class="user-avatar" src="" alt="User avatar" width="80" height="80">
+          <div class="user-meta">
+            <div class="user-title-row">
+              <h2 id="userName" class="user-name">Developer</h2>
+              <a id="userHandle" class="user-handle" href="#" target="_blank" rel="noopener noreferrer">@username</a>
+              <span id="profileLevelBadge" class="level-badge">Junior Ghost</span>
+            </div>
+            <p id="userBio" class="user-bio">Bio loading...</p>
+            <div class="user-chips">
+              <span id="chipRepos" class="chip">📦 0 Repos</span>
+              <span id="chipFollowers" class="chip">👥 0 Followers</span>
+              <span id="chipLanguages" class="chip">💻 Languages</span>
+              <span id="chipLastActive" class="chip">⏳ Active</span>
+            </div>
+          </div>
+        </div>
+        <div class="banner-share-actions">
+          <button type="button" id="copyRoastBtn" class="action-btn" aria-label="Copy roast summary to clipboard">
+            <span aria-hidden="true">📋</span> Copy Summary Card
+          </button>
+          <a id="ghProfileLink" href="#" target="_blank" rel="noopener noreferrer" class="action-btn secondary">
+            <span aria-hidden="true">↗️</span> View on GitHub
+          </a>
+        </div>
+      </section>
+
+      <!-- Scoreboard & Potential Score Section -->
+      <section class="score-grid" aria-label="GitHub Health Score and Potential Improvement">
+        <!-- Main Current Score Card -->
+        <article class="score-card primary-score">
+          <div class="score-card-header">
+            <span class="score-label">GitHub Health Score</span>
+            <span class="score-category-tag">100-Point Model</span>
+          </div>
+          <div class="score-display">
+            <div class="radial-score-wrapper">
+              <svg class="score-radial" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="radial-track" cx="60" cy="60" r="50"></circle>
+                <circle id="scoreRadialFill" class="radial-fill" cx="60" cy="60" r="50"></circle>
+              </svg>
+              <div class="radial-text">
+                <span id="overallScoreVal" class="score-number">0</span>
+                <span class="score-max">/100</span>
+              </div>
+            </div>
+            <div class="score-summary-text">
+              <div class="score-tier" id="scoreTierText">Calculating...</div>
+              <p id="scoreSummaryDesc" class="score-tier-desc">Deterministic calculation based on real public repositories and profile hygiene.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Potential Score Recovery Card -->
+        <article class="score-card potential-score-card">
+          <div class="score-card-header">
+            <span class="score-label">📈 Potential Score</span>
+            <span id="potentialGainBadge" class="potential-badge">+0 pts</span>
+          </div>
+          <div class="potential-comparison">
+            <div class="metric-col">
+              <span class="metric-caption">Current Score</span>
+              <span id="currentScoreMetric" class="metric-val current">0</span>
+            </div>
+            <div class="metric-arrow" aria-hidden="true">➔</div>
+            <div class="metric-col">
+              <span class="metric-caption">Potential Score</span>
+              <span id="potentialScoreMetric" class="metric-val target">0</span>
+            </div>
+          </div>
+          <p class="potential-explainer">
+            Calculated directly from detectable fixes (adding READMEs, descriptions, live demo links, and bio setup). Every deduction is recoverable!
+          </p>
+          <div class="score-gain-bar-wrapper" aria-hidden="true">
+            <div class="score-bar-base">
+              <div id="currentScoreBar" class="bar-fill current"></div>
+              <div id="potentialGainBar" class="bar-fill gain"></div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Category Breakdown Drawer / Grid -->
+      <section class="category-breakdown-section" aria-labelledby="cat-breakdown-heading">
+        <h3 id="cat-breakdown-heading" class="section-title">
+          <span>📊 Deterministic Score Breakdown</span>
+          <span class="section-subtitle">Click any category to inspect exact point deductions</span>
+        </h3>
+        <div class="categories-grid" id="categoriesGrid">
+          <!-- Dynamically populated categories -->
+        </div>
+      </section>
+
+      <!-- ROAST VIEW (Active by default) -->
+      <div id="roastViewContainer" class="mode-view">
+        <!-- The Roast Section -->
+        <section class="roast-section" aria-labelledby="roast-heading">
+          <div class="section-header">
+            <div class="title-with-badge">
+              <h3 id="roast-heading" class="section-title">🔥 The Roast</h3>
+              <span id="roastSeverityTag" class="severity-badge">Extra Crispy</span>
+            </div>
+            <span class="section-subtitle">Witty observations targeting actual detected weaknesses</span>
+          </div>
+
+          <!-- Headline Roast Card -->
+          <div class="headline-roast-card">
+            <div class="roast-quote-mark" aria-hidden="true">“</div>
+            <p id="headlineRoastText" class="headline-quote">Your repositories have documentation allergies.</p>
+            <p id="roastVerdictText" class="roast-verdict">Critical condition. Send immediate rescue units.</p>
+          </div>
+
+          <!-- AI Enhanced Snippet (Optional) -->
+          <div id="aiSnippetCard" class="ai-snippet-card" hidden>
+            <div class="ai-header">
+              <span class="ai-spark" aria-hidden="true">✨</span>
+              <span class="ai-title">AI Natural Language Zinger</span>
+            </div>
+            <p id="aiSnippetText" class="ai-text"></p>
+          </div>
+
+          <!-- Personalized Roast Cards List -->
+          <div id="roastObservationsList" class="roast-cards-grid" role="list">
+            <!-- Dynamically populated observations -->
+          </div>
+        </section>
+
+        <!-- 🚨 Biggest Problems Section -->
+        <section class="problems-section" aria-labelledby="problems-heading">
+          <h3 id="problems-heading" class="section-title">
+            <span>🚨 Biggest Problems Detected</span>
+            <span class="section-subtitle">The top issues dragging down your GitHub Health Score</span>
+          </h3>
+          <div id="biggestProblemsList" class="problems-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- 🚑 Rescue Plan Section -->
+        <section class="rescue-section" aria-labelledby="rescue-heading">
+          <div class="rescue-header-row">
+            <div>
+              <h3 id="rescue-heading" class="section-title">🚑 Rescue Plan</h3>
+              <span class="section-subtitle">Every criticism comes with an actionable solution</span>
+            </div>
+            <!-- Priority Filter Controls -->
+            <div class="rescue-filters" role="tablist" aria-label="Filter rescue plan by priority">
+              <button type="button" class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All (<span id="countAll">0</span>)</button>
+              <button type="button" class="filter-btn" data-filter="High" role="tab" aria-selected="false">High Priority (<span id="countHigh">0</span>)</button>
+              <button type="button" class="filter-btn" data-filter="Medium" role="tab" aria-selected="false">Medium (<span id="countMedium">0</span>)</button>
+              <button type="button" class="filter-btn" data-filter="Low" role="tab" aria-selected="false">Low (<span id="countLow">0</span>)</button>
+            </div>
+          </div>
+
+          <div id="rescueCardsList" class="rescue-cards-grid" role="list">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- 🏆 Top 5 Fixes Section -->
+        <section class="top-fixes-section" aria-labelledby="top-fixes-heading">
+          <div class="top-fixes-header">
+            <div>
+              <h3 id="top-fixes-heading" class="section-title">🏆 Your Top 5 Fixes</h3>
+              <span class="section-subtitle">The fastest, highest-leverage steps to boost your score today</span>
+            </div>
+            <div class="fixes-progress-indicator">
+              <span id="fixesCompletedCount">0/5</span> completed
+            </div>
+          </div>
+          <div id="top5FixesList" class="top-fixes-list">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- 📦 Project Analysis Section -->
+        <section class="project-analysis-section" aria-labelledby="projects-heading">
+          <h3 id="projects-heading" class="section-title">
+            <span>📦 Key Repositories Audit</span>
+            <span class="section-subtitle">Repository-level health scoring, roasts, and specific rescues</span>
+          </h3>
+          <div id="projectsGrid" class="projects-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+      </div>
+
+      <!-- RECRUITER VIEW (Professional & Constructive) -->
+      <div id="recruiterViewContainer" class="mode-view" hidden>
+        <section class="recruiter-section" aria-labelledby="recruiter-heading">
+          <div class="recruiter-hero-card">
+            <div class="recruiter-tag">💼 Objective Hiring Evaluation</div>
+            <h3 id="recruiter-heading" class="recruiter-hero-title">Technical Candidate Audit</h3>
+            <p id="recruiterSummaryText" class="recruiter-hero-summary">
+              Professional assessment of repository architecture, engineering momentum, documentation discipline, and screening readiness.
+            </p>
+            <div class="recruiter-badge-row">
+              <span class="badge-label">Job Readiness Status:</span>
+              <span id="readinessBadge" class="readiness-pill">Interview Ready</span>
+            </div>
+          </div>
+
+          <!-- Recruiter 5 Dimensions -->
+          <div class="recruiter-dimensions-grid" id="recruiterDimensionsGrid">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Tactical Career Recommendations -->
+          <div class="recruiter-recommendations-card">
+            <h4 class="recommendations-title">🎯 Key Hiring Recommendations</h4>
+            <p class="recommendations-subtitle">Direct action items to improve resume screening conversion rates and technical interviews</p>
+            <ul id="recruiterRecommendationsList" class="recruiter-recs-list">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-left">
+        <p><strong>🔥 GitRoast & Rescue</strong> — Honest developer portfolio feedback.</p>
+        <p class="footer-tagline">"Roast the profile, not the person." Built with Node.js, Express, and pure vanilla engineering.</p>
+      </div>
+      <div class="footer-right">
+        <span class="cloud-badge">☁️ Google Cloud Run Ready</span>
+        <span class="privacy-note">🔒 Zero keys exposed & no profile data stored.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
