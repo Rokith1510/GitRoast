@@ -209,3 +209,4 @@ function generateRescuePlan(user, repos = [], scoreData) {
 module.exports = {
   generateRescuePlan
 };
+

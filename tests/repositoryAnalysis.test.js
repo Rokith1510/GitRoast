@@ -86,3 +86,4 @@ describe('Repository Analysis Tests', () => {
     assert.strictEqual(analyzed[0].name, 'repo-15');
   });
 });
+

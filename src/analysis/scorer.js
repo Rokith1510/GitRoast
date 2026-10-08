@@ -655,3 +655,4 @@ function calculateHealthScore(user, repos = []) {
 module.exports = {
   calculateHealthScore
 };
+

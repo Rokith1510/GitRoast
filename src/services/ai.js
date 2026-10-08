@@ -72,3 +72,4 @@ Roast this profile in 2 witty sentences.`;
 module.exports = {
   generateAIRoastSnippet
 };
+

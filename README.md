@@ -297,3 +297,4 @@ GitRoast is built from the ground up for seamless deployment to **Google Cloud R
 ## 📄 License
 
 MIT License — Built with pride for the GitHub Roast and Rescue Hackathon Challenge.
+

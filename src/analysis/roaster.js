@@ -241,3 +241,4 @@ function generateRoast(user, repos = [], scoreData) {
 module.exports = {
   generateRoast
 };
+

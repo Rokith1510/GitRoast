@@ -55,3 +55,4 @@ describe('Missing README Detection Tests', () => {
     assert.strictEqual(missingRepoReadme, undefined, 'No deduction when all repos have README');
   });
 });
+

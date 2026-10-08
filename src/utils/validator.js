@@ -74,3 +74,4 @@ module.exports = {
   sanitizeString,
   GITHUB_USERNAME_REGEX
 };
+

@@ -194,3 +194,4 @@ function generateRecruiterReport(user, repos = [], scoreData) {
 module.exports = {
   generateRecruiterReport
 };
+

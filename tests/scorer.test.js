@@ -128,3 +128,4 @@ describe('Deterministic GitHub Health Scorer Tests', () => {
     assert.ok(result.potentialScore <= 100);
   });
 });
+
